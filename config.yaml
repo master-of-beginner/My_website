@@ -8,9 +8,8 @@ params:
   banner:
     buttonText: Get Started
     subtitle: |-
-      A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
-      AND RELEASED UNDER THE CREATIVE COMMONS.
-    title: Hi, my name is Vincent Lyu
+      My personal site so you could learn more about me and have fun!
+    title: I am Vincent Lyu, nice to meet you!
   blog: {}
   contact:
     address:
@@ -63,15 +62,15 @@ params:
     button1:
       - name: Get Started
         url: blogs
-    button2:
-      - name: Log In
-        url: '#'
+    # button2:
+    #   - name: Log In
+    #     url: '#'
     links:
       - name: Home
         url: '#'
       - name: Blogs
         url: blogs
-      - name: Generic Blog
+      - name: My hometown
         url: blogs/ipsum
       - name: Elements
         url: elements.html
@@ -82,37 +81,34 @@ params:
     enable: yes
     showcase:
       - image: pic01.jpg
-        subtitle: Ipsum Dolor Sit Amet
-        title: Aliquam
+        subtitle: my personality
+        title: Things about myself
         url: blogs/aliquam
       - image: pic02.jpg
-        subtitle: Feugiat Amet Tempus
-        title: Tempus
+        subtitle: Places I have been to
+        title: My footprint
         url: blogs/tempus
       - image: pic03.jpg
-        subtitle: Lorem Etiam Nullam
-        title: Magna
+        subtitle: Life is all about good food!
+        title: Food 
         url: blogs/magna
       - image: pic04.jpg
-        subtitle: Nisl Sed Aliquam
-        title: Ipsum
+        subtitle: place where I grew up
+        title: Hometown
         url: blogs/ipsum
       - image: pic05.jpg
-        subtitle: Ipsum Dolor Sit Amet
-        title: Consequat
+        subtitle: life in undergraduate
+        title: University
         url: blogs/ipsum
       - image: pic06.jpg
-        subtitle: Feugiat Amet Tempus
-        title: Etiam
+        subtitle: Life in postgraduate
+        title: Postgraduate
         url: blogs/ipsum
   two:
     buttonText: Get Started
     enable: yes
-    subtitle: "Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero.
-      \r\n    Mauris aliquet magna magna sed nunc rhoncus pharetra. \r\n    Pellentesque
-      condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia
-      pellentesque lorem ipsum dolor. \r\n    Nullam et orci eu lorem consequat tincidunt.
-      Vivamus et sagittis libero.\r\n    Mauris aliquet magna magna sed nunc rhoncus
-      amet pharetra et feugiat tempus."
-    title: Massa libero
+    subtitle: "Nice to see you here. This is Vincent's website. I will continue to update my recent experience!\r\n
+      If you think I am an interesting person, feel free to tax me through my email! I am always happy to make friends. \r\n    
+      If you want to learn more about me, then bookmark this site! Looking forward to hearing from you!
+    title: LOOK OVER HERE!!!
     url: blogs
