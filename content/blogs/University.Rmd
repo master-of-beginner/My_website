@@ -1,0 +1,47 @@
+---
+categories:
+- ""
+- ""
+date: sys.date()
+description: "my university in Shanghai"
+draft: false
+image: university.jpg
+keywords: ""
+slug: university
+title: My university
+---
+
+#  Shanghai University of Finance and Economics
+
+1. Brief description
+
+    Shanghai University of Finance and Economics (SUFE) was founded in 1917. After over 100 years' development, this university has become one of the toppest business universities in China, and it is also ranked 3rd in mainland China and 9th in Asia in terms of Economics and Finance by Tilburg University's Economics Schools Research Ranking.
+
+```{r}
+knitr::include_graphics("/img/University/SUFE.jpeg",error =FALSE)
+```
+
+2. My study life
+
+    Cmpetetion is fierce in SUFE. Library is always full of people everyday. Teachers are really good. They can magically change hard and boring courses interesting.  I love all my core courses, and I always feel grateful towards my professors for both the knowledge they taught and the virtual role they played.  
+    
+
+```{r}
+knitr::include_graphics("/img/University/library.jpeg",error =FALSE)
+```
+
+```{r}
+knitr::include_graphics("/img/University/study.jpeg",error =FALSE)
+```
+
+3. My good friends
+
+    Apart from good grades and knowledge, the most important thing I harvest from university is a bunch of good friends. We have thoughts and ideas that could be shared and disccused a lot. We help each other in classes, in jobs, and also we played an important role in each others' future plan. 
+
+```{r}
+knitr::include_graphics("/img/University/friend1.jpg",error =FALSE)
+```
+
+```{r}
+knitr::include_graphics("/img/University/roommates.jpg",error =FALSE)
+```

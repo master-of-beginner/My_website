@@ -10,7 +10,7 @@ params:
     subtitle: |-
       My personal site so you could learn more about me and have fun!
     title: I am Vincent Lyu, nice to meet you!
-  blog: {}
+  blog: {Vicnent Lyu, always have passion in life}
   contact:
     address:
       - city: London
@@ -25,16 +25,16 @@ params:
     enable: yes
     phone:
       - phone: (000) 111-2222 33334
-        title: Phone (not real)
+        title: Phone (not real, don't call)
   custom_css: []
   custom_js: []
   description: Your description
   error404:
-    heading: Page couldn't be found
+    heading: Wow You Find Something NEW!!! 
     text: Please visit [this page](/)
   favicon: favicon.ico
   footer:
-    copyright: Copyright sololy by mysel
+    copyright: Copyright sololy by myself
     enable: yes
     quicklinks:
       - alt: HTML5 UP
@@ -60,55 +60,60 @@ params:
   name: Your name
   navigation:
     button1:
-      - name: Get Started
+      - name: START NOW!
         url: blogs
     # button2:
     #   - name: Log In
     #     url: '#'
     links:
-      - name: Home
-        url: '#'
-      - name: Blogs
-        url: blogs
+      - name: My life at lbs
+        url: blogs/lbs
+      - name: University at Shanghai
+        url: blogs/university
+      - name: Food
+        url: blogs/food 
       - name: My hometown
-        url: blogs/ipsum
-      - name: Elements
-        url: elements.html
+        url: blogs/hometown
+      - name: My footprint
+        url: blogs/travel
+      - name: Things about myself
+        url: blogs/myself
     menu: Menu
-    subtitle: By HTML5 Up
-    title: Forty
+    subtitle: By LWX
+    title: Go back
   tiles:
     enable: yes
     showcase:
-      - image: pic01.jpg
-        subtitle: my personality
-        title: Things about myself
-        url: blogs/aliquam
-      - image: pic02.jpg
-        subtitle: Places I have been to
-        title: My footprint
-        url: blogs/tempus
-      - image: pic03.jpg
-        subtitle: Life is all about good food!
-        title: Food 
-        url: blogs/magna
-      - image: pic04.jpg
-        subtitle: place where I grew up
-        title: Hometown
-        url: blogs/ipsum
-      - image: pic05.jpg
-        subtitle: life in undergraduate
-        title: University
-        url: blogs/ipsum
-      - image: pic06.jpg
+      - image: lbs.jpg
         subtitle: Life in postgraduate
         title: Postgraduate
-        url: blogs/ipsum
+        url: blogs/lbs     
+      - image: university.jpg
+        subtitle: life in undergraduate
+        title: University
+        url: blogs/university
+      - image: food/food.jpg
+        subtitle: Life is all about good food!
+        title: Food 
+        url: blogs/food
+      - image: home/home.jpg
+        subtitle: place where I grew up
+        title: Hometown
+        url: blogs/hometown
+      - image: travel.jpg
+        subtitle: Places I have been to
+        title: My footprint
+        url: blogs/travel
+      - image: me.jpg
+        subtitle: my personality
+        title: Things about myself
+        url: blogs/myself
+
   two:
     buttonText: Get Started
     enable: yes
-    subtitle: "Nice to see you here. This is Vincent's website. I will continue to update my recent experience!\r\n
-      If you think I am an interesting person, feel free to tax me through my email! I am always happy to make friends. \r\n    
+    subtitle: Nice to see you here. This is Vincent's website. I will continue to update my recent experience!
+      If you think I am an interesting person, feel free to tax me through my email! I am always happy to make friends.  
       If you want to learn more about me, then bookmark this site! Looking forward to hearing from you!
-    title: LOOK OVER HERE!!!
+    title: LOOK AT HERE!!!
     url: blogs

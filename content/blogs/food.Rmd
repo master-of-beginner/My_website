@@ -1,0 +1,42 @@
+---
+categories:
+- ""
+- ""
+date: sys.date()
+description: "My favorite food"
+draft: false
+image: hotpot.jpg
+keywords: ""
+slug: food
+title: My favorite Food
+---
+
+#  Those are my top 3 favorite food!
+
+1.  Hotpot
+
+    Hotpot also known as soup-food or steamboat, is a cooking method that originates from China, prepared with a simmering pot of soup stock at the dining table, containing a variety of Chinese foodstuffs and ingredients. It could have so many different tastes, including spicy, tomato flavor, mushroom flavor, etc.
+
+```{r}
+knitr::include_graphics("/img/food/food.jpg",error =FALSE)
+```
+
+2. Hot and Spicy crayfish
+
+    Crayfish is a seasonal dish in China. People cram into Crayfish restaurants and order by the bucket load. It would be a liitle complex to cook this meal, and different restaurants can server totally different crayfish dishes. Some are very delicious.
+
+```{r}
+knitr::include_graphics("/img/food/lobsters.jpg",error =FALSE)
+```
+    
+
+3.  Barbecue 
+    Barbecue is an extremely popular food in China for midnight snack. Friends usually meet up together to a barbecue restaurants with wines and beer. You can find barbecue restaurants almost in every Chinese City.
+
+```{r}
+knitr::include_graphics("/img/food/barbecue.jpg",error =FALSE)
+```
+
+
+
+

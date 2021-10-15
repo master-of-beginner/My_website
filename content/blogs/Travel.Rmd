@@ -1,0 +1,32 @@
+---
+categories:
+- ""
+- ""
+date: sys.date()
+description: "This is me"
+draft: false
+image: scene.jpg
+keywords: ""
+slug: travel
+title: Always on the road
+---
+
+#  The university is infinite, and the exploration is endless
+
+I have been to lots of places. I rode on prairies, climbed the highest mountains in my country and camped under stars. There are so many good memories in travel.
+
+I once watched a video from TED Speech, where there was a saying really touching me. 
+
+> Travel really transformed me, making me realize the difference between making a living and make life. "YOUNG = GO". You are living a mement in your life where you have more freedom and flexibility than you may ever have before.
+
+```{r}
+knitr::include_graphics("/img/travel/space.jpeg", error = FALSE)
+```
+
+
+```{r}
+knitr::include_graphics("/img/travel/car.jpg", error = FALSE)
+```
+
+
+

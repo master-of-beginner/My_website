@@ -1,0 +1,48 @@
+---
+categories:
+- ""
+- ""
+date: sys.date()
+description: "my university in Shanghai"
+draft: false
+image: school.jpg
+keywords: ""
+slug: lbs
+title: My life at LBS
+---
+
+# London Business School
+
+1. My feelings
+
+    It is really nice to be here. Teachers here are really good. They are knowlegeable as well as humble. I keeps learning things every day. The feeling of tasting new things, meeting new friends, experiencing new cultures is amazing. 
+
+```{r}
+knitr::include_graphics("/img/LBS/First impression.jpg",error =FALSE)
+```
+
+
+2. My life here at London
+
+    London  Business School provides me with a wonderful life experience. The school is very beautiful, like a fairy tale. I have made good friends there. Also, the scenery in the Thames is wonderful. London Tower, London Bridge, and Canary Wharlf are especially amazing at sunset and night. 
+
+```{r}
+knitr::include_graphics("/img/LBS/river.jpg",error =FALSE)
+```
+
+```{r}
+knitr::include_graphics("/img/LBS/bridge.jpg",error =FALSE)
+```
+
+```{r}
+knitr::include_graphics("/img/LBS/tower.jpg",error =FALSE)
+```
+
+3. My mates at LBS
+  
+    I really meet many wonderful talents here. We can have great conversations, and I enjoy talkings with them.    
+
+```{r}
+knitr::include_graphics("/img/LBS/mates.jpg",error =FALSE)
+```
+
