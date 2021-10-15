@@ -77,7 +77,7 @@ params:
       - name: My footprint
         url: blogs/travel
       - name: Things about myself
-        url: blogs/myself
+        url: blogs/VincentLv_resume -LBS.pdf
     menu: Menu
     subtitle: By LWX
     title: Go back
@@ -105,9 +105,9 @@ params:
         title: My footprint
         url: blogs/travel
       - image: me.jpg
-        subtitle: my personality
-        title: Things about myself
-        url: blogs/myself
+        subtitle: My work experience
+        title: My CV
+        url: blogs/VincentLv_resume -LBS.pdf
 
   two:
     buttonText: Get Started
