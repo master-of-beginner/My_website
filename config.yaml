@@ -9,7 +9,7 @@ params:
     buttonText: Get Started
     subtitle: |-
       My personal site so you could learn more about me and have fun!
-    title: I am Vincent Lyu, nice to meet you!
+    title: Hello strangers, nice to see you here!
   blog: {Vicnent Lyu, always have passion in life}
   contact:
     address:
@@ -41,21 +41,21 @@ params:
         text: 'Design: '
         url: https://www.html5up.net
     social:
-      - icon: fa-twitter
-        label: Twitter
-        url: https://www.twitter.com
-      - icon: fa-facebook
-        label: Facebook
-        url: https://www.facebook.com
-      - icon: fa-instagram
-        label: Instagram
-        url: https://www.instagram.com
+      # - icon: fa-twitter
+      #   label: Twitter
+      #   url: https://www.twitter.com
+      # - icon: fa-facebook
+      #   label: Facebook
+      #   url: https://www.facebook.com
+      # - icon: fa-instagram
+      #   label: Instagram
+      #   url: https://www.instagram.com
       - icon: fa-github
         label: GitHub
         url: https://github.com/master-of-beginner
       - icon: fa-linkedin
         label: LinkedIn
-        url: https://www.linkedin.com
+        url: https://www.linkedin.com/in/weixin-lyu-0131/
   image: ''
   name: Your name
   navigation:
@@ -105,7 +105,7 @@ params:
         title: My footprint
         url: blogs/travel
       - image: me.jpg
-        subtitle: My work experience
+        subtitle: My professional work experience
         title: My CV
         url: blogs/VincentLv_resume -LBS.pdf
 
