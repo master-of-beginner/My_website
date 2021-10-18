@@ -1,0 +1,154 @@
+---
+categories:
+- ""
+- ""
+date: sys.date()
+description: "My hometown"
+draft: false
+image: banner.jpg
+keywords: ""
+slug: bikes
+title: Analyzing Santander Bike
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="in-this-page-i-will-analyze-santander-bikes-hiring-situation-using-r." class="section level3">
+<h3>In this page, I will analyze Santander Bikes’ hiring situation using R.</h3>
+<pre class="r"><code>url &lt;- &quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&quot;
+
+# Download TFL data to temporary file
+httr::GET(url, write_disk(bike.temp &lt;- tempfile(fileext = &quot;.xlsx&quot;)))</code></pre>
+<pre><code>## Response [https://airdrive-secure.s3-eu-west-1.amazonaws.com/london/dataset/number-bicycle-hires/2021-09-23T12%3A52%3A20/tfl-daily-cycle-hires.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAJJDIMAIVZJDICKHA%2F20211018%2Feu-west-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20211018T194001Z&amp;X-Amz-Expires=300&amp;X-Amz-Signature=885f4ce11a01e0be0e28d152249cc939b9098617739d37990afd9844c46a9f43&amp;X-Amz-SignedHeaders=host]
+##   Date: 2021-10-18 19:40
+##   Status: 200
+##   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+##   Size: 174 kB
+## &lt;ON DISK&gt;  C:\Users\Vincent.Lv\AppData\Local\Temp\Rtmpk954BE\file226461f0e6e.xlsx</code></pre>
+<pre class="r"><code># Use read_excel to read it as dataframe
+bike0 &lt;- read_excel(bike.temp,
+                   sheet = &quot;Data&quot;,
+                   range = cell_cols(&quot;A:B&quot;))
+
+# change dates to get year, month, and week
+bike &lt;- bike0 %&gt;% 
+  clean_names() %&gt;% 
+  rename (bikes_hired = number_of_bicycle_hires) %&gt;% 
+  mutate (year = year(day),
+          month = lubridate::month(day, label = TRUE),
+          week = isoweek(day))</code></pre>
+<div id="our-graph-for-bikes-hired-by-month-and-year" class="section level4">
+<h4>Our graph for bikes hired by month and year</h4>
+<pre class="r"><code>bike %&gt;% 
+  filter(year &gt;= 2015) %&gt;% 
+  ggplot(aes(x = bikes_hired)) +
+  geom_density() +
+  facet_grid(rows = vars(year),
+             cols = vars(month),
+             scales = &#39;fixed&#39;)+
+  theme_bw() +
+  theme(legend.position = &#39;none&#39;,
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank(),
+        panel.border = element_blank(),
+        ) +
+  scale_x_continuous(labels = scales::unit_format(
+          unit = &#39;K&#39;,
+          scale = 1e-3)
+          ) +
+  labs(
+    title = &#39;Distribution of bikes hired per month&#39;,
+    x = &#39;Bike Rentals&#39;)</code></pre>
+<p><img src="/blogs/TFL_files/figure-html/unnamed-chunk-1-1.png" width="1440" /></p>
+</div>
+<div id="answer-to-look-at-may-and-jun-and-compare-2020-with-the-previous-years.-whats-happening" class="section level4">
+<h4>Answer to Look at May and Jun and compare 2020 with the previous years. What’s happening?</h4>
+<blockquote>
+<p>Right away we can see that the distribution is a lot more flat in 2020 for these two months compared to previous years. The implication here being that we saw more of a range of number of hires but a significantly smaller number of concetrations of hires at one instance, i.e. not seeing numerous 40k hires for example, but a little bit of 40k, 20k, 60k, etc. This peculiar phenomenon can be attributed to the general uncertanity of the period, wherein people were sceptical about public transport (thus resorted to bikes), but were unsure about travel in general at the same time.</p>
+</blockquote>
+</div>
+<div id="our-graph-for-monthly-changes-in-tfl-bike-rentals" class="section level4">
+<h4>Our graph for monthly changes in Tfl bike rentals</h4>
+<pre class="r"><code>data &lt;- bike %&gt;% 
+  filter(year &gt; 2015) %&gt;% 
+  group_by(year, month) %&gt;% 
+  summarise(month_bike = mean(bikes_hired),
+            month_num = month(day)) </code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the `.groups` argument.</code></pre>
+<pre class="r"><code># Use mean value of 2016 - 2019 for expectation
+data2 &lt;- data %&gt;% 
+  filter(year &lt; 2020) %&gt;% 
+  group_by(month_num) %&gt;%
+  summarise(expectation = mean(month_bike))  
+
+#merge these two dataset
+total_data &lt;- left_join(data, data2, by = &#39;month_num&#39;) %&gt;% 
+  mutate(mark = ifelse(expectation &gt; month_bike, &#39;red&#39;, &#39;green&#39;),
+         gap = month_bike - expectation)
+  
+
+# plot the graph 
+total_data %&gt;% ggplot(aes(x = month_num, y = expectation)) +
+  geom_line(aes(x = month_num, y = month_bike))+
+  geom_line(size = 2, color = &#39;blue&#39;) +
+  facet_wrap(~year) +
+  scale_x_continuous(breaks = 1:12, 
+                     labels = month(seq(as.Date(&#39;2020-01-01&#39;),  # get the month sequence for label
+                                        as.Date(&#39;2020-12-01&#39;),
+                                        by = &#39;1 month&#39;), label = TRUE)) +
+  geom_ribbon(aes(ymin = expectation, ymax = expectation + pmax(gap,0)), alpha = 0.3, fill = &#39;red&#39;) +
+  geom_ribbon(aes(ymin = expectation - pmax(-gap,0), ymax = expectation), alpha = 0.3, fill = &#39;green&#39;) +
+  theme_bw() +
+  labs(title = &#39;Monthly changes in Tfl bike rentals&#39;,
+       subtitle = &#39;Change from monthly average shown in blue \n and calculated between 2016 - 2019&#39;,
+       x = &#39;month&#39;,
+       y = &#39;Bike Rentals&#39;
+  )</code></pre>
+<p><img src="/blogs/TFL_files/figure-html/unnamed-chunk-2-1.png" width="1440" /></p>
+</div>
+<div id="our-graph-for-weekly-changes-in-tfl-bike-rentals" class="section level4">
+<h4>Our graph for weekly changes in Tfl bike rentals</h4>
+<pre class="r"><code>week_data &lt;- bike %&gt;% 
+  filter(year &gt; 2015) %&gt;% 
+  group_by(year, week) %&gt;% 
+  summarise(week_bike = mean(bikes_hired))</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;. You can override using the `.groups` argument.</code></pre>
+<pre class="r"><code># Use mean value of 2016 - 2019 for expectation
+week_data2 &lt;- week_data %&gt;%
+  filter(year &lt; 2020) %&gt;% 
+  group_by(week) %&gt;%
+  summarise(expectation = mean(week_bike))  
+
+#merge these two dataset
+total_week_data &lt;- left_join(week_data, week_data2, by = &#39;week&#39;) %&gt;% 
+  #calculate % change 
+  mutate(pct_change = (week_bike-expectation)/expectation,
+         mark = ifelse(pct_change &lt;= 0, c(&#39;green&#39;), c(&#39;red&#39;) ))
+  
+# plot the graph 
+total_week_data %&gt;% 
+  filter(year != 2021 | week != 53) %&gt;% 
+  ggplot(aes(x = week, y = pct_change)) +
+  geom_line()+
+  geom_ribbon(aes(ymin = 0, ymax = pmax(pct_change, 0)), fill = &#39;green&#39;, alpha = 0.3) +
+  geom_ribbon(aes(ymin = pmin(pct_change, 0), ymax = 0), fill = &#39;red&#39;, alpha = 0.3) +
+  geom_rug(aes(color = mark), sides = &#39;b&#39;) +
+  geom_rect(aes(xmin = 14, xmax = 26, ymin = -Inf, ymax = Inf), fill = &#39;grey&#39;, alpha = 0.01) + #add the shadow rectangle +
+  geom_rect(aes(xmin = 40, xmax = 52, ymin = -Inf, ymax = Inf), fill = &#39;grey&#39;, alpha = 0.01) + #add the shadow rectangle +
+  facet_wrap(~year) +
+  theme_bw() +
+  theme(legend.position = &#39;none&#39;,
+        panel.border = element_blank(),
+        ) +
+  scale_y_continuous(limits = c(-0.8, 1.2)) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = &#39;Weekly changes in Tfl bike rental&#39;,
+    subtitle = &#39;% change from weekly averages calculated between 2016-2019&#39;,
+    xlabs = &#39;year&#39;)</code></pre>
+<pre><code>## Scale for &#39;y&#39; is already present. Adding another scale for &#39;y&#39;, which will
+## replace the existing scale.</code></pre>
+<p><img src="/blogs/TFL_files/figure-html/unnamed-chunk-3-1.png" width="1152" /></p>
+</div>
+</div>

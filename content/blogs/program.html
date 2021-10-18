@@ -1,0 +1,186 @@
+---
+categories:
+- ""
+- ""
+date: sys.date()
+description: "my programming ability"
+draft: false
+image: oman.jpg
+keywords: ""
+slug: program
+title: Program to solve problem
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="in-this-page-i-will-test-the-performance-of-the-following-three-bond-investment-stategies." class="section level2">
+<h2>In this page, I will test the performance of the following three bond investment stategies.</h2>
+<ol style="list-style-type: decimal">
+<li><p>Buy and Hold - Buy the 5 year bond and hold to maturity (so hold it for 5years) and then buy a new 5-year bond and repeat;</p></li>
+<li><p>Riding the Yield Curve - Buy the 5 yr bond, hold for one year then sell when it has 4 years left to maturity, buy another 5 year bond, repeat;</p></li>
+<li><p>Bond Ladder - Start by investing 20% of your wealth in bonds of each maturity. At the end of the first year, when the 1 year bond matures,invest the proceeds in a new 5 year bond, repeat.</p></li>
+</ol>
+<div id="write-a-function-to-get-price-information" class="section level3">
+<h3>write a function to get price information</h3>
+<pre class="r"><code>return_price &lt;- function(year1 = t, period = N){
+  col_name &lt;- paste(&#39;y_&#39;, period, sep = &quot;&quot;)
+  price &lt;- bond_price %&gt;%
+    filter(year == year1)
+  price1 &lt;- price[,col_name]
+  result &lt;- as.numeric(price1)
+  return(result)
+  }</code></pre>
+</div>
+<div id="import-data-only-select-data-in-june" class="section level3">
+<h3>import data, only select data in June</h3>
+<pre class="r"><code>bond_price &lt;- read_xlsx(&#39;../../data/MFA_Dataset.xlsx&#39;, sheet = &#39;Price of zero coupon bonds&#39;)
+bond_price &lt;- bond_price %&gt;% 
+  mutate(year = year(date),
+         month = month(date)) %&gt;% 
+  filter(month == 6)</code></pre>
+</div>
+<div id="glimpse-of-data" class="section level3">
+<h3>glimpse of data</h3>
+<pre class="r"><code>glimpse(bond_price)</code></pre>
+<pre><code>## Rows: 66
+## Columns: 8
+## $ date  &lt;dttm&gt; 1952-06-30, 1953-06-30, 1954-06-30, 1955-06-30, 1956-06-29, 195~
+## $ y_1   &lt;dbl&gt; 98.17776, 97.60832, 99.27101, 98.17769, 97.49627, 96.45416, 98.9~
+## $ y_2   &lt;dbl&gt; 96.25313, 95.23141, 98.19150, 95.77206, 94.51093, 93.18866, 96.7~
+## $ y_3   &lt;dbl&gt; 94.24671, 93.31467, 96.12548, 92.97613, 91.98989, 89.42248, 93.6~
+## $ y_4   &lt;dbl&gt; 92.63413, 90.71423, 93.61679, 90.67198, 89.29643, 85.70602, 90.5~
+## $ y_5   &lt;dbl&gt; 90.41830, 86.96603, 91.54034, 88.18102, 86.73633, 82.06758, 87.9~
+## $ year  &lt;dbl&gt; 1952, 1953, 1954, 1955, 1956, 1957, 1958, 1959, 1960, 1961, 1962~
+## $ month &lt;dbl&gt; 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6~</code></pre>
+</div>
+<div id="strategy-a" class="section level3">
+<h3>Strategy a</h3>
+<pre class="r"><code>mat &lt;- matrix(nrow = 100, ncol = 2) # set a new dataframe to store value
+net &lt;- 100
+year_now = 1952
+mat[1,] &lt;- c(1952, 100)
+price_buy &lt;- return_price(year = year_now, period = 5) # get the 5-year bond price at year 1952
+num &lt;- net / price_buy
+
+for (i in 1:65){
+  year_now &lt;- year_now + 1
+  if(i %% 5 == 0 ){
+    net &lt;- 100 * num  #get the principal of 100 at maturity
+    price_buy &lt;- return_price(year = year_now, period = 5)
+    num &lt;- net / price_buy  
+    mat[i+1,] &lt;- c(year_now, net)
+  } 
+  else{
+    year_buy &lt;- return_price(year = year_now, period = 5 - i %% 5) # get the current price of our holding bond
+    net &lt;- year_buy * num
+    mat[i+1,] &lt;- c(year_now, net)
+  }
+}
+
+mat_1 &lt;- data.frame(mat) %&gt;% 
+  rename(year = X1,
+         strategy1 = X2) %&gt;% 
+  drop_na()</code></pre>
+</div>
+<div id="strategy-b" class="section level3">
+<h3>strategy b</h3>
+<pre class="r"><code>mat &lt;- matrix(nrow = 100, ncol = 2) # set a new dataframe to store value
+net &lt;- 100
+year_now = 1952
+mat[1,] &lt;- c(1952, 100)
+
+for (i in 1:65){
+  year_now &lt;- year_now + 1
+  year_buy = year_now - 1
+  price_buy = return_price(year = year_buy, period = 5) # our cost to buy the old bond last year
+  price_sell = return_price(year = year_now, period = 4) #the price we sell for our old bond
+  earning = price_sell - price_buy # profit earned from one unit of bond
+  num &lt;- net / price_buy  
+  net &lt;- net + earning * num
+  mat[i+1,] &lt;- c(year_now, net)
+  } 
+ 
+
+mat_2 &lt;- data.frame(mat) %&gt;% 
+  rename(year = X1,
+         strategy2 = X2) %&gt;% 
+  drop_na()</code></pre>
+</div>
+<div id="strategy-c" class="section level3">
+<h3>strategy c</h3>
+<pre class="r"><code>mat &lt;- matrix(nrow = 100, ncol = 2) # set a new dataframe to store value
+net &lt;- 100
+year_now = 1952
+mat[1,] &lt;- c(1952, 100)
+price_buy_1 &lt;- return_price(year = year_now, period = 1) 
+price_buy_2 &lt;- return_price(year = year_now, period = 2)
+price_buy_3 &lt;- return_price(year = year_now, period = 3)
+price_buy_4 &lt;- return_price(year = year_now, period = 4)
+price_buy_5 &lt;- return_price(year = year_now, period = 5)
+num_1 &lt;- net * 0.2 / price_buy_1
+num_2 &lt;- net * 0.2 / price_buy_2
+num_3 &lt;- net * 0.2 / price_buy_3
+num_4 &lt;- net * 0.2 / price_buy_4
+num_5 &lt;- net * 0.2 / price_buy_5
+
+for (i in 1:65){
+  year_now &lt;- year_now + 1
+  year_buy = year_now - 1
+  proceed &lt;- 100 * num_1 #proceeds we get from year 1 bond matured
+  price_buy_1 &lt;- return_price(year = year_buy, period = 1)
+  price_buy_2 &lt;- return_price(year = year_buy, period = 2)
+  price_buy_3 &lt;- return_price(year = year_buy, period = 3)
+  price_buy_4 &lt;- return_price(year = year_buy, period = 4)
+  price_buy_5 &lt;- return_price(year = year_now, period = 5) # market price now
+  num_1 &lt;- num_2
+  num_2 &lt;- num_3
+  num_3 &lt;- num_4
+  num_4 &lt;- num_5
+  num_5 &lt;- proceed / price_buy_5
+  net &lt;- price_buy_1 * num_1 + price_buy_2 * num_2 + price_buy_3 * num_3 + price_buy_4 * num_4 + price_buy_5 * num_5 # value of the fund
+  mat[i+1,] &lt;- c(year_now, net)
+
+  } 
+
+mat_3 &lt;- data.frame(mat) %&gt;% 
+  rename(year = X1,
+         strategy3 = X2) %&gt;% 
+  drop_na()</code></pre>
+</div>
+<div id="result" class="section level3">
+<h3>Result</h3>
+<pre class="r"><code>data &lt;- left_join(mat_2, mat_3, by = &#39;year&#39;)
+data &lt;- left_join(data, mat_1, by = &#39;year&#39;) %&gt;% 
+  pivot_longer(cols = 2:4, names_to = &#39;strategy&#39;, values_to = &#39;net_value&#39;)
+data2 &lt;- pivot_wider(data, names_from = strategy, values_from = net_value)
+
+
+data %&gt;% ggplot(aes( x = year, y = net_value, color = strategy)) +
+  geom_line() +
+  geom_point(size = 1) +
+  theme_bw() +
+  labs(title = &#39;back test for three bonds strategies&#39;,
+       y = &#39;portfolio total value&#39;)</code></pre>
+<p><img src="/blogs/program_files/figure-html/unnamed-chunk-7-1.png" width="1152" /></p>
+<pre class="r"><code>data %&gt;% ggplot(aes( x = year, y = net_value, color = &#39;strategy&#39;) ) +
+  geom_line() +
+  geom_point(size = 1) +
+  theme_bw() +
+  theme(legend.position = &#39;none&#39;) +
+  facet_wrap(~strategy)+
+  labs(title = &#39;back test for individual bonds strategy (Start from 100)&#39;,
+       y = &#39;portfolio value&#39; )    </code></pre>
+<p><img src="/blogs/program_files/figure-html/unnamed-chunk-8-1.png" width="1152" /></p>
+</div>
+<div id="conclusion" class="section level3">
+<h3>Conclusion</h3>
+<ol style="list-style-type: decimal">
+<li><p>For strategy 1, its Macaulay duration changes with changes in time to maturity. Its duration goes from 5 to 1 periodically within 5 years. Therefore, the average Macaulay duration of strategy 1 for the whole 65 years is 3 years.</p></li>
+<li><p>For strategy 2, this strategy always holds a bond that has 5 years to maturity. So, the Macaulay duration for Strategy 2 is 5 years.</p></li>
+<li><p>For strategy 3, for the very beginning, this strategy allocates its weight to each bond evenly. So, it has a Macaulay duration of 3 years equal to that of Strategy 1. However, its Macaulay duration changes over time. The weight on bonds with different terms changes because firstly they perform differently, and secondly with time going by, their duration naturally decreases with maturity decreases. So approximately, the Macaulay duration for Strategy 3 is shorter than strategy 2.
+Also, Strategy 3 has the smallest standard deviation. This is because it holds diversified bonds, which could partly diversified interest risks and provide higher liquidity. These reasons explain why strategy 3 has a smaller standard deviation than strategy 1.</p></li>
+</ol>
+<p>All in all, by logic, Strategy 2 should have a larger Macaulay duration, and Strategy 1 and Strategy 3 should have a similar Macaulay duration. This is also the truth in empirical data of Standard deviation, where Strategy 2 shows a higher standard deviation, and Strategy 1 and Strategy 3 have a smaller standard deviation.</p>
+</div>
+</div>

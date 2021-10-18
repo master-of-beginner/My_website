@@ -3,30 +3,47 @@ categories:
 - ""
 - ""
 date: sys.date()
-description: "This is me"
+description: "Work Experience"
 draft: false
-image: scene.jpg
+image: pro.jpg
 keywords: ""
 slug: travel
-title: Always on the road
+title: My professional Experience
 ---
 
-#  The university is infinite, and the exploration is endless
+## My recent working experience
 
-I have been to lots of places. I rode on prairies, climbed the highest mountains in my country and camped under stars. There are so many good memories in travel.
+### High-Flyer Quant                                                                                     
+High-Flyer Quant is one of the Chinese largest hedge funds with more than 100 billion RMB under management. I worked in its active investment department as a fund manager assistant for half a year.
 
-I once watched a video from TED Speech, where there was a saying really touching me. 
+The followings are my major jobs:
+1. Analyzed the market size, developing trend and competitive landscape of industries such as Capacitor, Panel, Optical Film, Optical Lens, Projector, Laser TV; attended over 10 industry meetings to share and discuss investment strategies.
 
-> Travel really transformed me, making me realize the difference between making a living and make life. "YOUNG = GO". You are living a mement in your life where you have more freedom and flexibility than you may ever have before.
+2. Researched a wide range of listed companies in those industries; completed over 20 DCF models. More than 8 listed stocks earned a return of 100% after recommendation. Earned fund managers’ trust and engaged in making investment decisions.
 
-```{r}
-knitr::include_graphics("/img/travel/space.jpeg", error = FALSE)
-```
+3. Participated in over 10 communications with several industry experts and corporate managers about technology breakthrough, future developing trends, and details of products to form valuation more precisely.Discussed with managers frequently about stock market, monetary and fiscal policy; won applause for precise and logical opinions
 
+### China International Capital Corporation (CICC)                                                                                 
+CICC is one of the world-class and most famous investment banks in China. I worked in its IB department for 3 months.
 
-```{r}
-knitr::include_graphics("/img/travel/car.jpg", error = FALSE)
-```
+The followings are my major jobs:
+1. Wrote business and industry chapters of Micro-Port Robotics' prospectus by communicating with its senior executives, covering its core products, technology process, and medical robot industry.
+
+2. Completed spin-off listing project for Ascentage Pharma (6855.HK). Built DCF valuation model for non-tumor drug platform for spin-off company, and designed spin-off listing schedule
+
+3. Participated in Road Show materials for Microport CardioFlow (2160.HK) and held online zoom meeting for overseas investors
+
+### China Securities                                                                             
+China Securities is one of the top 3 securities companies in China. I worked there as a quantitative investor for half a year.                                                                                                                       
+The followings are my major jobs:
+1. Composed a 30-page report on stock selecting ability of overseas institutional capital and Chinese fund
+
+2. Constructed highly effective portfolios based on northbound capital. Long-short portfolio had an annualized return of 55.1% and Sharpe Ratio of 9.2 in a three-year daily reallocation back-test
+
+3. Assessed holding structure of mutual fund. Found a strong stock pitching ability after 2016. Constructed a Long-short portfolio, with an annualized return of 10.5% and Sharpe Ratio of 0.83 in 4-year monthly reallocation back-test
+
+4. Reviewed mismatch phenomenon between foreign and domestic capital, finding the stock pitching style becoming more similar. Domestic capital's stock pitching ability surpassed foreign capital after 2019
+
 
 
 

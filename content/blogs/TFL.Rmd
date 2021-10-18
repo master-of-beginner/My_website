@@ -1,0 +1,184 @@
+---
+categories:
+- ""
+- ""
+date: sys.date()
+description: "My hometown"
+draft: false
+image: banner.jpg
+keywords: ""
+slug: bikes
+title: Analyzing Santander Bike
+---
+
+### In this page, I will analyze Santander Bikes' hiring situation using R.
+
+
+```{r load-libraries, include=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(httr)
+library(readxl)
+library(vroom)
+library(fivethirtyeight)
+library(tidyquant)
+library(rvest)
+library(infer)
+library(readxl)
+
+```
+
+```{r, get_tfl_data, cache=TRUE}
+url <- "https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx"
+
+# Download TFL data to temporary file
+httr::GET(url, write_disk(bike.temp <- tempfile(fileext = ".xlsx")))
+
+# Use read_excel to read it as dataframe
+bike0 <- read_excel(bike.temp,
+                   sheet = "Data",
+                   range = cell_cols("A:B"))
+
+# change dates to get year, month, and week
+bike <- bike0 %>% 
+  clean_names() %>% 
+  rename (bikes_hired = number_of_bicycle_hires) %>% 
+  mutate (year = year(day),
+          month = lubridate::month(day, label = TRUE),
+          week = isoweek(day))
+```
+
+#### Our graph for bikes hired by month and year
+
+```{r, fig.width = 15, fig.height= 10}
+bike %>% 
+  filter(year >= 2015) %>% 
+  ggplot(aes(x = bikes_hired)) +
+  geom_density() +
+  facet_grid(rows = vars(year),
+             cols = vars(month),
+             scales = 'fixed')+
+  theme_bw() +
+  theme(legend.position = 'none',
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank(),
+        panel.border = element_blank(),
+        ) +
+  scale_x_continuous(labels = scales::unit_format(
+          unit = 'K',
+          scale = 1e-3)
+          ) +
+  labs(
+    title = 'Distribution of bikes hired per month',
+    x = 'Bike Rentals')
+```
+
+#### Answer to Look at May and Jun and compare 2020 with the previous years. What's happening?
+
+> Right away we can see that the distribution is a lot more flat in 2020 for these two months compared to previous years. The implication here being that we saw more of a range of number of hires but a significantly smaller number of concetrations of hires at one instance, i.e. not seeing numerous 40k hires for example, but a little bit of 40k, 20k, 60k, etc. This peculiar phenomenon can be attributed to the general uncertanity of the period, wherein people were sceptical about public transport (thus resorted to bikes), but were unsure about travel in general at the same time.
+
+#### Our graph for monthly changes in Tfl bike rentals
+
+```{r, fig.width= 15, fig.height = 12}
+data <- bike %>% 
+  filter(year > 2015) %>% 
+  group_by(year, month) %>% 
+  summarise(month_bike = mean(bikes_hired),
+            month_num = month(day)) 
+
+  
+# Use mean value of 2016 - 2019 for expectation
+data2 <- data %>% 
+  filter(year < 2020) %>% 
+  group_by(month_num) %>%
+  summarise(expectation = mean(month_bike))  
+
+#merge these two dataset
+total_data <- left_join(data, data2, by = 'month_num') %>% 
+  mutate(mark = ifelse(expectation > month_bike, 'red', 'green'),
+         gap = month_bike - expectation)
+  
+
+# plot the graph 
+total_data %>% ggplot(aes(x = month_num, y = expectation)) +
+  geom_line(aes(x = month_num, y = month_bike))+
+  geom_line(size = 2, color = 'blue') +
+  facet_wrap(~year) +
+  scale_x_continuous(breaks = 1:12, 
+                     labels = month(seq(as.Date('2020-01-01'),  # get the month sequence for label
+                                        as.Date('2020-12-01'),
+                                        by = '1 month'), label = TRUE)) +
+  geom_ribbon(aes(ymin = expectation, ymax = expectation + pmax(gap,0)), alpha = 0.3, fill = 'red') +
+  geom_ribbon(aes(ymin = expectation - pmax(-gap,0), ymax = expectation), alpha = 0.3, fill = 'green') +
+  theme_bw() +
+  labs(title = 'Monthly changes in Tfl bike rentals',
+       subtitle = 'Change from monthly average shown in blue \n and calculated between 2016 - 2019',
+       x = 'month',
+       y = 'Bike Rentals'
+  )
+
+  
+
+```
+
+#### Our graph for weekly changes in Tfl bike rentals
+
+
+```{r, fig.width= 12, fig.height = 12}
+week_data <- bike %>% 
+  filter(year > 2015) %>% 
+  group_by(year, week) %>% 
+  summarise(week_bike = mean(bikes_hired))
+             
+  
+# Use mean value of 2016 - 2019 for expectation
+week_data2 <- week_data %>%
+  filter(year < 2020) %>% 
+  group_by(week) %>%
+  summarise(expectation = mean(week_bike))  
+
+#merge these two dataset
+total_week_data <- left_join(week_data, week_data2, by = 'week') %>% 
+  #calculate % change 
+  mutate(pct_change = (week_bike-expectation)/expectation,
+         mark = ifelse(pct_change <= 0, c('green'), c('red') ))
+  
+# plot the graph 
+total_week_data %>% 
+  filter(year != 2021 | week != 53) %>% 
+  ggplot(aes(x = week, y = pct_change)) +
+  geom_line()+
+  geom_ribbon(aes(ymin = 0, ymax = pmax(pct_change, 0)), fill = 'green', alpha = 0.3) +
+  geom_ribbon(aes(ymin = pmin(pct_change, 0), ymax = 0), fill = 'red', alpha = 0.3) +
+  geom_rug(aes(color = mark), sides = 'b') +
+  geom_rect(aes(xmin = 14, xmax = 26, ymin = -Inf, ymax = Inf), fill = 'grey', alpha = 0.01) + #add the shadow rectangle +
+  geom_rect(aes(xmin = 40, xmax = 52, ymin = -Inf, ymax = Inf), fill = 'grey', alpha = 0.01) + #add the shadow rectangle +
+  facet_wrap(~year) +
+  theme_bw() +
+  theme(legend.position = 'none',
+        panel.border = element_blank(),
+        ) +
+  scale_y_continuous(limits = c(-0.8, 1.2)) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = 'Weekly changes in Tfl bike rental',
+    subtitle = '% change from weekly averages calculated between 2016-2019',
+    xlabs = 'year')
+```
+
+
+
+
+
+
+
+
+
+
+
+

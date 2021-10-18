@@ -70,13 +70,13 @@ params:
         url: blogs/lbs
       - name: University at Shanghai
         url: blogs/university
-      - name: Food
-        url: blogs/food 
-      - name: My hometown
-        url: blogs/hometown
-      - name: My footprint
+      - name: Code to back test strategies
+        url: blogs/program
+      - name: Analyze TFL bikes
+        url: blogs/bikes
+      - name: Professional experience
         url: blogs/travel
-      - name: Things about myself
+      - name: Quick Glimpse of myself
         url: blogs/VincentLv_resume -LBS.pdf
     menu: Menu
     subtitle: By LWX
@@ -92,20 +92,20 @@ params:
         subtitle: life in undergraduate
         title: University
         url: blogs/university
-      - image: food/food.jpg
-        subtitle: Life is all about good food!
-        title: Food 
-        url: blogs/food
-      - image: home/home.jpg
-        subtitle: place where I grew up
-        title: Hometown
-        url: blogs/hometown
-      - image: travel.jpg
-        subtitle: Places I have been to
-        title: My footprint
+      - image: code.jpg
+        subtitle: Bond Strategy Performance
+        title: R to caculate past performance 
+        url: blogs/program
+      - image: TFL bikes.jpg
+        subtitle: Analyzing TFL Bikes
+        title: R to analyze a problem
+        url: blogs/bikes
+      - image: Professional.jpg
+        subtitle: My working exposure
+        title: Professional Experience
         url: blogs/travel
       - image: me.jpg
-        subtitle: My professional work experience
+        subtitle: A brief glimpse of myself
         title: My CV
         url: blogs/VincentLv_resume -LBS.pdf
 
